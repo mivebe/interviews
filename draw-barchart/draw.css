@@ -1,0 +1,31 @@
+html,body{
+    margin: 0;
+    padding: 0;
+}
+
+#graph_container{
+    position:relative;
+    top: 0;
+    left: 0;
+    width: 100vw;
+}
+
+#metrics{
+    width: 100vw;
+    display: flex;
+}
+
+p.mark{
+    padding: 0;
+    margin: 0;
+}
+
+p.mark span{
+    float: right;
+}
+
+div.row{
+    height: 20px;
+    margin: 10px;
+    background-color: lightblue;
+}
