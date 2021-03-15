@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 300;
+  line-height: 1.42em;
+  color: #A7A1AE;
+  background-color: #1F2739;
+}
