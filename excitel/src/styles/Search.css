@@ -1,0 +1,26 @@
+
+#search-dropdown_container {
+    top: 60px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    max-height: 40px;
+    min-height: 20px;
+    min-width: 100px;
+    max-width: 200px;
+    z-index: 1000;
+    display: inline-grid;
+    justify-items: center;
+  }
+  
+  #search-dropdown {
+    z-index: 1000;
+    background-color: aliceblue;
+    color: black;
+    width: 80%;
+  }
+  
+  #search-dropdown p:hover {
+    background: lightgreen;
+    cursor: pointer;
+  }
