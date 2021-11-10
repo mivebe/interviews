@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>task_4</title>
+    <link rel="stylesheet" href="./task_4.css">
+    <script src="task_4.js" defer></script>
+
+</head>
+
+<body>
+    <div id="container">
+        <input id="file-input" type="file" onchange='handleFileChange(event)' />
+    </div>
+
+    <div id="switches_container">
+        <form id="time-period">
+            <input type="radio" id="days" name="time-period_switch" value="Day">
+            <label for="days">Day</label>
+            <input type="radio" id="moths" name="time-period_switch" value="Month">
+            <label for="months">Month</label>
+        </form>
+    </div>
+
+    <div id="graph_container"></div>
+    <div id="metrics"></div>
+
+</body>
+
+</html>
