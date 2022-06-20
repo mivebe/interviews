@@ -1,0 +1,13 @@
+{
+  "name": "kraken-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names \"SERVER,CLIENT\" --prefix-colors \"yellow,blue\" --kill-others \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client && npm run build --prefix server",
+    "test": "npm run test --prefix client && npm run test --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
