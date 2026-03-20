@@ -1,0 +1,29 @@
+{
+  "name": "garden-makeover",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:single": "vite build && node --input-type=module -e \"import fs from 'fs';const s=fs.statSync('dist/index.html').size;console.log('\\nSingle HTML: '+(s/1024/1024).toFixed(2)+' MB ('+s+' bytes)')\"",
+    "preview": "vite preview",
+    "optimize": "node scripts/optimize-assets.js",
+    "clean-assets": "node scripts/clean-assets.js",
+    "clean-assets:dry": "node scripts/clean-assets.js --dry-run"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "howler": "^2.2.4",
+    "pixi.js": "^8.17.1",
+    "three": "^0.172.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.3.0",
+    "@gltf-transform/extensions": "^4.3.0",
+    "@gltf-transform/functions": "^4.3.0",
+    "sharp": "^0.34.5",
+    "vite": "^6.2.0",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}
