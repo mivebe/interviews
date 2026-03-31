@@ -63,11 +63,15 @@ cp -r dist/* ../../dashboard/dist/projects/expensify-app/
 cd ../..
 echo ">>> expensify-app built."
 
-# 7. Copy sett-garden-makeover (pre-built single file)
-echo ">>> Copying sett-garden-makeover..."
-mkdir -p dashboard/dist/projects/sett-garden-makeover
-cp sett-garden-makeover/dist/index.html dashboard/dist/projects/sett-garden-makeover/
-echo ">>> sett-garden-makeover copied."
+# 7. Build sett-garden-makeover (Vite single-file)
+echo ">>> Building sett-garden-makeover..."
+cd sett-garden-makeover
+npm ci --no-fund
+npx vite build
+mkdir -p ../dashboard/dist/projects/sett-garden-makeover
+cp dist/index.html ../dashboard/dist/projects/sett-garden-makeover/
+cd ..
+echo ">>> sett-garden-makeover built."
 
 # 8. Copy gong-game (vanilla, no build)
 echo ">>> Copying gong-game..."
