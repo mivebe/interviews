@@ -53,17 +53,15 @@ cp -r dist/* ../dashboard/dist/projects/softgames-ace-of-shadows/
 cd ..
 echo ">>> softgames-ace-of-shadows built."
 
-# 6. Build expensify-app (Webpack)
+# 6. Build expensify-app (Vite)
 echo ">>> Building expensify-app..."
-cd expensify-app
-npm install --no-fund
-NODE_OPTIONS=--openssl-legacy-provider npx webpack -p --env production || echo "WARN: expensify-app build failed, skipping..."
-mkdir -p ../dashboard/dist/projects/expensify-app
-if [ -d "public" ]; then
-  cp -r public/* ../dashboard/dist/projects/expensify-app/
-fi
-cd ..
-echo ">>> expensify-app done."
+cd expensify-app/client
+npm ci --no-fund
+npx vite build
+mkdir -p ../../dashboard/dist/projects/expensify-app
+cp -r dist/* ../../dashboard/dist/projects/expensify-app/
+cd ../..
+echo ">>> expensify-app built."
 
 # 7. Copy sett-garden-makeover (pre-built single file)
 echo ">>> Copying sett-garden-makeover..."
