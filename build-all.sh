@@ -6,27 +6,27 @@ echo "=== Building Interview Portfolio ==="
 # 1. Build the dashboard (shell app)
 echo ">>> Building dashboard..."
 cd dashboard
-npm ci
+npm ci --no-fund
 npx tsc -b && npx vite build
 cd ..
 echo ">>> Dashboard built."
 
 mkdir -p dashboard/dist/projects
 
-# 2. Build excitel-countries (CRA)
+# 2. Build excitel-countries (Vite)
 echo ">>> Building excitel-countries..."
 cd excitel-countries
-npm ci
-PUBLIC_URL=/projects/excitel-countries npx react-scripts build
+npm ci --no-fund
+npx vite build
 mkdir -p ../dashboard/dist/projects/excitel-countries
-cp -r build/* ../dashboard/dist/projects/excitel-countries/
+cp -r dist/* ../dashboard/dist/projects/excitel-countries/
 cd ..
 echo ">>> excitel-countries built."
 
 # 3. Build kraken-app client (Vite)
 echo ">>> Building kraken-app..."
 cd kraken-app/client
-npm ci
+npm ci --no-fund
 npx tsc -b && npx vite build
 mkdir -p ../../dashboard/dist/projects/kraken-app
 cp -r dist/* ../../dashboard/dist/projects/kraken-app/
@@ -36,7 +36,7 @@ echo ">>> kraken-app built."
 # 4. Build proxiad-buildings (CRA)
 echo ">>> Building proxiad-buildings..."
 cd proxiad-buildings
-npm ci
+npm ci --no-fund
 PUBLIC_URL=/projects/proxiad-buildings npx react-scripts build
 mkdir -p ../dashboard/dist/projects/proxiad-buildings
 cp -r build/* ../dashboard/dist/projects/proxiad-buildings/
@@ -46,7 +46,7 @@ echo ">>> proxiad-buildings built."
 # 5. Build softgames-ace-of-shadows (Vite)
 echo ">>> Building softgames-ace-of-shadows..."
 cd softgames-ace-of-shadows
-npm ci
+npm ci --no-fund
 npx tsc && npx vite build
 mkdir -p ../dashboard/dist/projects/softgames-ace-of-shadows
 cp -r dist/* ../dashboard/dist/projects/softgames-ace-of-shadows/
@@ -56,7 +56,7 @@ echo ">>> softgames-ace-of-shadows built."
 # 6. Build expensify-app (Webpack)
 echo ">>> Building expensify-app..."
 cd expensify-app
-npm install
+npm install --no-fund
 NODE_OPTIONS=--openssl-legacy-provider npx webpack -p --env production || echo "WARN: expensify-app build failed, skipping..."
 mkdir -p ../dashboard/dist/projects/expensify-app
 if [ -d "public" ]; then

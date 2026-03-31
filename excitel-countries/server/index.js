@@ -1,34 +1,31 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
+import express from 'express';
+import cors from 'cors';
 
-const express = require("express");
 const app = express();
 
-const cors = require('cors');
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get('/', async (req, res) => {
+  const searchQuery = req.query.query;
 
-    const searchQuery = req.query.query
+  try {
+    const response = await fetch(`https://excitel-countries.azurewebsites.net/countries/${searchQuery}`, {
+      method: 'GET',
+    });
+    const data = await response.json();
 
-    try {
-
-        const response = await fetch(`https://excitel-countries.azurewebsites.net/countries/${searchQuery}`, {
-            method: "GET",
-        })
-        const data = await response.json()
-
-        res.json(data)
-
-    } catch (err) {
-        console.log();
-        console.log("AN EXCEPTION OCCURED :(");
-        console.log(err);
-        return err
-    }
+    res.json(data);
+  } catch (err) {
+    console.log();
+    console.log('AN EXCEPTION OCCURED :(');
+    console.log(err);
+    return err;
+  }
 });
 
 const PORT = 3001;
 
 app.listen(PORT, () => {
-   console.log(`Server is running on PORT: ${PORT}`);
+  console.log(`Server is running on PORT: ${PORT}`);
 });
