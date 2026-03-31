@@ -36,7 +36,7 @@ echo ">>> kraken-app built."
 # 4. Build proxiad-buildings (CRA)
 echo ">>> Building proxiad-buildings..."
 cd proxiad-buildings
-npm ci --no-fund
+npm install --no-fund
 PUBLIC_URL=/projects/proxiad-buildings npx react-scripts build
 mkdir -p ../dashboard/dist/projects/proxiad-buildings
 cp -r build/* ../dashboard/dist/projects/proxiad-buildings/
