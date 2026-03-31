@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/ace-of-shadows/',
+  base: '/projects/softgames-ace-of-shadows/',
 });

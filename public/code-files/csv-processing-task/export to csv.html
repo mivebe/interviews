@@ -1,0 +1,68 @@
+<html>
+
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <script type="text/JavaScript">
+    $(document).ready(function(){
+        $("#btnExport").click(function(e) {
+            var msg = GetMimeTypes();
+            //OpenOffice
+            window.open('data:application/vnd.oasis.opendocument.spreadsheet,' + $('#dvData').html());
+            //MS-Excel
+            window.open('data:application/vnd.ms-excel,' + $('#dvData').html());
+            //CSV
+            window.open('data:application/csv,charset=utf-8,' + $('#dvData').html());
+            e.preventDefault();
+        });
+    });
+    
+    function GetMimeTypes () {
+        var message = "";
+            // Internet Explorer supports the mimeTypes collection, but it is always empty
+        if (navigator.mimeTypes && navigator.mimeTypes.length > 0) {
+            var mimes = navigator.mimeTypes;
+            for (var i=0; i < mimes.length; i++) {
+                message += "<b>" + mimes[i].type + "</b> : " + mimes[i].description + "<br />";
+            }
+        }
+        else {
+            message = "Your browser does not support this ";
+           //sorry!
+        }
+    
+        return ( message);
+    }
+    </script>
+
+</head>
+
+<body>
+    <div id="dvData">
+        <table>
+            <tr>
+                <th>Column One </th>
+                <th>Column Two</th>
+                <th>Column Three</th>
+            </tr>
+            <tr>
+                <td>row1 Col1</td>
+                <td>row1 Col2</td>
+                <td>row1 Col3</td>
+            </tr>
+            <tr>
+                <td>row2 Col1</td>
+                <td>row2 Col2</td>
+                <td>row2 Col3</td>
+            </tr>
+            <tr>
+                <td>row3 Col1</td>
+                <td>row3 Col2</td>
+                <td>row3 Col3</td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <input type="button" id="btnExport" value=" Export Table data into Excel " />
+
+</body>

@@ -1,0 +1,43 @@
+[build]
+  command = "bash build-all.sh"
+  publish = "dashboard/dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Netlify Functions
+[functions]
+  node_bundler = "esbuild"
+
+# Sub-project SPA fallbacks (must come before the catch-all)
+[[redirects]]
+  from = "/projects/excitel-countries/*"
+  to = "/projects/excitel-countries/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects/proxiad-buildings/*"
+  to = "/projects/proxiad-buildings/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects/kraken-app/*"
+  to = "/projects/kraken-app/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects/expensify-app/*"
+  to = "/projects/expensify-app/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/projects/softgames-ace-of-shadows/*"
+  to = "/projects/softgames-ace-of-shadows/index.html"
+  status = 200
+
+# Shell app SPA fallback (catch-all for /code/* and /)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

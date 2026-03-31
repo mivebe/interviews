@@ -17,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`http://localhost:3001?query=${query || urlSearch}`)
+      const response = await fetch(`/.netlify/functions/excitel-api?query=${query || urlSearch}`)
       const data = await response.json()
       setCountries(data)
     })()

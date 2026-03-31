@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a1a;
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+/* Ant Design card shadow override for dark theme */
+.ant-card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  transition: box-shadow 0.3s ease, transform 0.2s ease !important;
+}
+
+.ant-card:hover {
+  box-shadow: 0 8px 32px rgba(22, 104, 220, 0.15) !important;
+  transform: translateY(-2px);
+}
+
+/* Code block styling */
+.code-block pre {
+  border-radius: 8px;
+  padding: 20px !important;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  border: 1px solid #2a2a4a;
+}
+
+.code-block code {
+  font-family: "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas,
+    monospace;
+}
+
+/* Tabs dark override */
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+  background: #16213e !important;
+  border-color: #2a2a4a !important;
+}
+
+.ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+  background: #1a1a2e !important;
+  border-bottom-color: #1a1a2e !important;
+}
+
+/* Segmented control */
+.ant-segmented {
+  background: #16213e !important;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .code-block pre {
+    font-size: 0.75rem;
+    padding: 12px !important;
+  }
+}

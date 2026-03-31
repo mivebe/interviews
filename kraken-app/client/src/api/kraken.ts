@@ -6,7 +6,7 @@ import type {
 } from "../types";
 
 export async function fetchData(desiredPair: string): Promise<TickerResponse> {
-  const response = await fetch(`/api/currencypair?pair=${desiredPair}`);
+  const response = await fetch(`/.netlify/functions/kraken-api/currencypair?pair=${desiredPair}`);
   if (!response.ok) {
     const body = await response.json();
     throw new Error(body.error ?? `Server error: ${response.status}`);
@@ -15,7 +15,7 @@ export async function fetchData(desiredPair: string): Promise<TickerResponse> {
 }
 
 export async function fetchAssetPairs(): Promise<TradingPair[]> {
-  const response = await fetch("/api/assetpairs");
+  const response = await fetch("/.netlify/functions/kraken-api/assetpairs");
   if (!response.ok) {
     const body = await response.json();
     throw new Error(body.error ?? `Server error: ${response.status}`);

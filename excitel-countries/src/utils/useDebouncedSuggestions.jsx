@@ -7,7 +7,7 @@ const useDebounce = (value, delay) => {
     useEffect(() => {
         const handler = setTimeout(() => {
             const getData = async () => {
-                const response = await fetch(`http://localhost:3001?query=${value}`)
+                const response = await fetch(`/.netlify/functions/excitel-api?query=${value}`)
                 const data = await response.json()
                 setDebouncedValue(data)
             }
