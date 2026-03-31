@@ -18,6 +18,7 @@ echo ">>> Building excitel-countries..."
 cd excitel-countries
 npm ci
 PUBLIC_URL=/projects/excitel-countries npx react-scripts build
+mkdir -p ../dashboard/dist/projects/excitel-countries
 cp -r build/* ../dashboard/dist/projects/excitel-countries/
 cd ..
 echo ">>> excitel-countries built."
