@@ -14,7 +14,7 @@ const theme = createTheme({
 
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider theme={theme}>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/:pair" element={<App />} />

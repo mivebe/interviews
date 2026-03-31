@@ -15,12 +15,12 @@ mkdir -p dashboard/dist/projects
 
 # 2. Build excitel-countries (Vite)
 echo ">>> Building excitel-countries..."
-cd excitel-countries
+cd excitel-countries/client
 npm ci --no-fund
 npx vite build
-mkdir -p ../dashboard/dist/projects/excitel-countries
-cp -r dist/* ../dashboard/dist/projects/excitel-countries/
-cd ..
+mkdir -p ../../dashboard/dist/projects/excitel-countries
+cp -r dist/* ../../dashboard/dist/projects/excitel-countries/
+cd ../..
 echo ">>> excitel-countries built."
 
 # 3. Build kraken-app client (Vite)
