@@ -12,7 +12,7 @@ function curry(func) {
 
 }
 
-Usage examples:
+// Usage examples:
 
 function sum(a, b, c) {
   return a + b + c;
@@ -40,6 +40,6 @@ function curried(...args) {
 
 
 
-ES6 iplementation 
+// ES6 iplementation 
 
 const curry = (fn) => (...args) => fn.bind(null, ...args);

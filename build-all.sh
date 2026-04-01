@@ -33,14 +33,14 @@ cp -r dist/* ../../dashboard/dist/projects/kraken-app/
 cd ../..
 echo ">>> kraken-app built."
 
-# 4. Build proxiad-buildings (CRA)
+# 4. Build proxiad-buildings (Vite)
 echo ">>> Building proxiad-buildings..."
-cd proxiad-buildings
-npm install --no-fund
-PUBLIC_URL=/projects/proxiad-buildings npx react-scripts build
-mkdir -p ../dashboard/dist/projects/proxiad-buildings
-cp -r build/* ../dashboard/dist/projects/proxiad-buildings/
-cd ..
+cd proxiad-buildings/client
+npm ci --no-fund
+npx vite build
+mkdir -p ../../dashboard/dist/projects/proxiad-buildings
+cp -r dist/* ../../dashboard/dist/projects/proxiad-buildings/
+cd ../..
 echo ">>> proxiad-buildings built."
 
 # 5. Build softgames-ace-of-shadows (Vite)
