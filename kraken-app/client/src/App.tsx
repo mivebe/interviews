@@ -79,7 +79,7 @@ function App() {
         }}
       >
         <img
-          src="/kraken_logo_text.jpg"
+          src={`${import.meta.env.BASE_URL}kraken_logo_text.jpg`}
           alt="Kraken"
           style={{ height: 40, borderRadius: 8 }}
         />

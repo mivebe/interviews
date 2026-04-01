@@ -7,16 +7,21 @@ const renderChart2 = rowData => {
     const biggest = rowData.reduce((acc, curV) => acc[1] > curV[1] ? acc : curV)
 
     const sectionWidth = (container.scrollWidth) / (biggest[1] + 1)
-    const sectionHeight = (container.scrollHeight) / (rowData.length + 1)
 
     rowData.forEach((el, i) => {
-
         const width = sectionWidth * el[1]
 
         const row = document.createElement("div")
         row.classList.add("row")
         row.style.width = `${width}px`
+
         row.textContent = el[0]
+
+        const value = document.createElement("span")
+        value.classList.add("row-value")
+        value.textContent = el[1]
+        row.appendChild(value)
+
         container.append(row)
     })
 
@@ -28,8 +33,8 @@ const renderChart2 = rowData => {
         metrics.append(mark)
     }
 
-    const sinalMark = document.createElement("span")
-    sinalMark.textContent = biggest[1] + 1
+    const finalMark = document.createElement("span")
+    finalMark.textContent = biggest[1] + 1
     metrics.lastChild.appendChild(finalMark)
 }
 

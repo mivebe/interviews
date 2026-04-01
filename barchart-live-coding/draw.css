@@ -1,31 +1,53 @@
-html,body{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#graph_container{
-    position:relative;
-    top: 0;
-    left: 0;
-    width: 100vw;
+body {
+  font-family: monospace;
+  padding: 32px;
 }
 
-#metrics{
-    width: 100vw;
-    display: flex;
+.title {
+  font-size: 1.4rem;
+  margin-bottom: 2px;
 }
 
-p.mark{
-    padding: 0;
-    margin: 0;
+.subtitle {
+  font-size: 0.8rem;
+  color: #999;
+  margin-bottom: 24px;
 }
 
-p.mark span{
-    float: right;
+div.row {
+  height: 24px;
+  margin: 4px 0;
+  background: steelblue;
+  padding: 0 8px;
+  font-size: 0.75rem;
+  line-height: 24px;
+  color: #fff;
 }
 
-div.row{
-    height: 20px;
-    margin: 10px;
-    background-color: lightblue;
+.row-value {
+  margin-left: 8px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#metrics {
+  display: flex;
+  border-top: 1px solid #ccc;
+  margin-top: 8px;
+  padding-top: 4px;
+}
+
+p.mark {
+  font-size: 0.65rem;
+  color: #aaa;
+  text-align: right;
+}
+
+p.mark span {
+  float: right;
 }
