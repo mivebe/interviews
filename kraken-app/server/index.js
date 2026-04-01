@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const express = require('express');
 const app = express();
 
@@ -45,8 +43,9 @@ const toKrakenRequest = async (endpoint, pair) => {
     const publicPath = '/0/public/';
     const apiEndpointFullURL = baseDomain + publicPath + endPointName + '?' + inputParameters;
 
-    const jsonData = await axios.get(apiEndpointFullURL);
-    return jsonData.data.result;
+    const response = await fetch(apiEndpointFullURL);
+    const jsonData = await response.json();
+    return jsonData.result;
   }
 };
 
