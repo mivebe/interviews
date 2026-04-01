@@ -125,6 +125,10 @@ export const projects: Project[] = [
     tags: ["JavaScript", "TypeScript", "HTML", "CSS"],
     category: "frontend",
     demoPath: "/projects/kanbanize-app/",
+    codeFiles: [
+      { name: "Task 1 – Group By Number", path: "kanbanize-app/task_1/task_1.js" },
+      { name: "Task 2 – Get Workday", path: "kanbanize-app/task_2/task_2.js" },
+    ],
   },
   // Code-only projects
   {

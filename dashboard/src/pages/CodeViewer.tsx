@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { Typography, Tabs, Spin, Tag, Button } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { useEffect, useState, useRef } from "react";
+import { ArrowLeftOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { projects, categoryLabels, categoryColors } from "../data/projects";
 
 const { Title, Paragraph } = Typography;
@@ -25,6 +25,8 @@ function CodeViewer() {
   const { projectId } = useParams<{ projectId: string }>();
   const project = projects.find((p) => p.id === projectId);
   const [highlighted, setHighlighted] = useState<Record<string, string>>({});
+  const [rawCode, setRawCode] = useState<Record<string, string>>({});
+  const [output, setOutput] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(true);
   const highlighterRef = useRef<Awaited<ReturnType<typeof import("shiki/bundle/web")["createHighlighter"]>> | null>(null);
 
@@ -45,11 +47,13 @@ function CodeViewer() {
       const highlighter = highlighterRef.current;
 
       const htmls: Record<string, string> = {};
+      const raws: Record<string, string> = {};
 
       for (const file of project.codeFiles!) {
         try {
           const res = await fetch(`/code-files/${file.path}`);
           const text = await res.text();
+          raws[file.path] = text;
 
           const lang = getLanguage(file.path);
           if (lang === "text") {
@@ -65,12 +69,48 @@ function CodeViewer() {
         }
       }
 
+      setRawCode(raws);
       setHighlighted(htmls);
       setLoading(false);
     };
 
     loadFiles();
   }, [project]);
+
+  const isRunnable = useCallback(
+    (filePath: string) => {
+      const lang = getLanguage(filePath);
+      return lang === "javascript" || lang === "typescript";
+    },
+    []
+  );
+
+  const runCode = useCallback(
+    (filePath: string) => {
+      const code = rawCode[filePath];
+      if (!code) return;
+
+      const logs: string[] = [];
+      const fakeConsole = {
+        log: (...args: unknown[]) =>
+          logs.push(args.map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a))).join(" ")),
+        error: (...args: unknown[]) =>
+          logs.push("ERROR: " + args.map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a))).join(" ")),
+        warn: (...args: unknown[]) =>
+          logs.push("WARN: " + args.map((a) => (typeof a === "object" ? JSON.stringify(a, null, 2) : String(a))).join(" ")),
+      };
+
+      try {
+        const fn = new Function("console", code);
+        fn(fakeConsole);
+      } catch (err) {
+        logs.push("ERROR: " + (err instanceof Error ? err.message : String(err)));
+      }
+
+      setOutput((prev) => ({ ...prev, [filePath]: logs }));
+    },
+    [rawCode]
+  );
 
   if (!project) {
     return (
@@ -93,10 +133,52 @@ function CodeViewer() {
         <Spin size="large" />
       </div>
     ) : (
-      <div
-        className="code-block"
-        dangerouslySetInnerHTML={{ __html: highlighted[file.path] ?? "" }}
-      />
+      <div>
+        {isRunnable(file.path) && (
+          <Button
+            type="primary"
+            icon={<PlayCircleOutlined />}
+            onClick={() => runCode(file.path)}
+            style={{ marginBottom: 12 }}
+          >
+            Run
+          </Button>
+        )}
+        <div
+          className="code-block"
+          dangerouslySetInnerHTML={{ __html: highlighted[file.path] ?? "" }}
+        />
+        {output[file.path] && (
+          <div
+            style={{
+              marginTop: 16,
+              background: "#0d1117",
+              border: "1px solid #30363d",
+              borderRadius: 8,
+              padding: 16,
+              fontFamily: "monospace",
+              fontSize: 13,
+              whiteSpace: "pre-wrap",
+              color: "#58a6ff",
+            }}
+          >
+            <div style={{ color: "#8b949e", marginBottom: 8, fontSize: 12, textTransform: "uppercase", letterSpacing: 1 }}>
+              Console Output
+            </div>
+            {output[file.path].map((line, i) => (
+              <div
+                key={i}
+                style={{
+                  color: line.startsWith("ERROR:") ? "#f85149" : line.startsWith("WARN:") ? "#d29922" : "#e6edf3",
+                  padding: "2px 0",
+                }}
+              >
+                {line}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     ),
   }));
 

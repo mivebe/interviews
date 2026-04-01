@@ -22,6 +22,7 @@ interface ProjectCardProps {
 
 function ProjectCard({ project }: ProjectCardProps) {
   const isDemo = !!project.demoPath;
+  const hasCode = !!project.codeFiles;
   const href = isDemo ? project.demoPath! : `/code/${project.id}`;
 
   return (
@@ -78,6 +79,22 @@ function ProjectCard({ project }: ProjectCardProps) {
             </Tag>
           ))}
         </div>
+        {isDemo && hasCode && (
+          <a
+            href={`/code/${project.id}`}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              marginTop: 12,
+              color: "#52c41a",
+              fontSize: "0.8rem",
+            }}
+          >
+            <CodeOutlined /> View Code
+          </a>
+        )}
       </Card>
     </a>
   );

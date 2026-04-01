@@ -1,60 +1,67 @@
-# Excitel countries app
+# Countries Explorer
 
-This is a tiny React/Node Rest application implementing the Excitel countries API.
-It features only public endpoints so you dont need any registration or API keys.
+A React/Node full-stack SPA for browsing world countries data with search, pagination, and sorting.
+
+## Live Demo
+
+[mivebe-interviews.netlify.app/projects/excitel-countries](https://mivebe-interviews.netlify.app/projects/excitel-countries/)
+
+## About
+
+Built as an interview project for Excitel, this application displays country data from a public REST API. It features debounced search with typeahead suggestions, a paginated and sortable data table, and a detail modal rendered via React Portal. The app uses only public endpoints -- no registration or API keys required.
 
 ## Features
 
-Search functionlity
-Navigate search
-Debouced search suggestions
-Pagination functionality
-Sorting functinality
-Muative and reversed sorting
-Modal with React Portal
-Responsive table
+- Search countries by name with debounced suggestions
+- Pagination with configurable items per page
+- Sortable columns with alphabetical, reversed, and mutative sorting
+- Detail modal via React Portal (triggered by long-press on any row)
+- URL-based search navigation (e.g., `/Portugal`)
+- Responsive table that hides columns on smaller screens
 
-## Installation
+## Tech Stack
 
-Npm install in the root directory
+| Technology | Role |
+|---|---|
+| [React](https://react.dev/) 18 | UI framework |
+| [React Router](https://reactrouter.com/) 6 | Client-side routing |
+| [Node.js](https://nodejs.org/) | Server runtime |
+| [Express](https://expressjs.com/) 4 | API proxy server |
+| [Vite](https://vite.dev/) 6 | Build tool and dev server |
+
+## Project Structure
+
+```
+excitel-countries/
+├── client/                 # React frontend
+│   └── src/
+│       ├── components/     # Table, Search, Modal, Pagination
+│       ├── App.jsx         # Main app with routing
+│       └── main.jsx        # Entry point
+└── server/                 # Express backend
+    └── index.js            # API proxy to Excitel REST endpoints
+```
+
+## Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+)
+
+### Install & Run
+
 ```bash
+# Install dependencies
 npm install
-```
 
-Use the provided scripts:
-"start": starting the frontend
-```bash
-npm start
-```
-in addition to
-"server": starting the backend
-```bash
-npm run server
-```
-or the combined script "dev": to do both
-```bash
+# Start both client and server
 npm run dev
+
+# Or start individually
+npm start        # Frontend only
+npm run server   # Backend only
 ```
 
-## Usage
+## Author
 
-The main page of the application displays a table with countries information and is the only page of the application, it is SPA after all :D.
-By using either dropdown the user can control the country rows displayed per page or the visible categories.
-By typing in the search field user can get a suggestion on sontries by name. Tapping enter will apply the search.
-Clicking on suggestion will copy the suggested county name in the search field.
-Navigatong to a '/' followed by any country name will apply search with that country name.
-User can navigate through pages via the provided page buttons below
-On clicking and holding for a secound and a half on any row field user will open a window.
-with detailed information about clicked country and receive visual input  for the progress beforehand.
-By clicking on the buttons diwplayin the category name on the columns the user can sort the said column alphabetically.
-Sorting in reversed order and mutative sorting is available.
-Table adapts with window size and hides last column if necessary.
-
-## Technologies
-
-React.js   ReactRouter
-Node.js Express.js
-
-## License
-
-Have fun :P
+[@mivebe](https://github.com/mivebe)

@@ -10,6 +10,9 @@ const staticProjectMappings: Record<string, { root: string; indexFile?: string }
   "kanbanize-app": { root: "../kanbanize-app" },
 };
 
+/** Resolve /code-files/{project}/{file} to ../{project}/{file} */
+const CODE_FILES_PREFIX = "/code-files/";
+
 const MIME_TYPES: Record<string, string> = {
   ".html": "text/html",
   ".js": "application/javascript",
@@ -22,6 +25,29 @@ const MIME_TYPES: Record<string, string> = {
   ".svg": "image/svg+xml",
   ".csv": "text/csv",
 };
+
+function serveCodeFiles(): Plugin {
+  return {
+    name: "serve-code-files",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url ?? "";
+        if (!url.startsWith(CODE_FILES_PREFIX)) return next();
+
+        const relPath = decodeURIComponent(url.slice(CODE_FILES_PREFIX.length));
+        const absPath = path.resolve(__dirname, "..", relPath);
+
+        if (fs.existsSync(absPath) && fs.statSync(absPath).isFile()) {
+          const ext = path.extname(absPath).toLowerCase();
+          res.setHeader("Content-Type", MIME_TYPES[ext] || "text/plain");
+          fs.createReadStream(absPath).pipe(res);
+        } else {
+          next();
+        }
+      });
+    },
+  };
+}
 
 function serveStaticProjects(): Plugin {
   return {
@@ -70,8 +96,43 @@ function serveStaticProjects(): Plugin {
   };
 }
 
+/** Copy code files referenced in projects.ts into dist/code-files/ at build time */
+function copyCodeFiles(): Plugin {
+  return {
+    name: "copy-code-files",
+    writeBundle() {
+      // Lazy-import project data to find all codeFile paths
+      const codeFilePaths = [
+        "kanbanize-app/task_1/task_1.js",
+        "kanbanize-app/task_2/task_2.js",
+        "kpmg-live-coding/longestString.js",
+        "kpmg-live-coding/longestString.test.js",
+        "csv-processing-task/.csv parse function.txt",
+        "csv-processing-task/export to csv.html",
+        "csv-processing-task/process CSV Node.js",
+        "thinkmarkets-live-coding/index.jsx",
+        "thinkmarkets-live-coding/livecoding_task.txt",
+        "unknown-live-coding/Single_Linked_List.js",
+        "unknown-live-coding/Double_Linked_List.js",
+        "unknown-live-coding/Circular_Linked_List.js",
+        "unknown-live-coding/currying.js",
+        "unknown-live-coding/oop-context-change.js",
+      ];
+
+      for (const filePath of codeFilePaths) {
+        const src = path.resolve(__dirname, "..", filePath);
+        const dest = path.resolve(__dirname, "dist", "code-files", filePath);
+        if (fs.existsSync(src)) {
+          fs.mkdirSync(path.dirname(dest), { recursive: true });
+          fs.copyFileSync(src, dest);
+        }
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), serveStaticProjects()],
+  plugins: [react(), serveCodeFiles(), serveStaticProjects(), copyCodeFiles()],
   build: {
     outDir: "dist",
   },
