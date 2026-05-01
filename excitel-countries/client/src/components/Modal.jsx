@@ -1,21 +1,37 @@
-import { createPortal } from "react-dom"
-import "../styles/Modal.css"
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
+
+import '../styles/Modal.css';
 
 const Modal = ({ children, onClose }) => {
+    useEffect(() => {
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') onClose();
+        };
+        document.addEventListener('keydown', handleEscape);
+        return () => document.removeEventListener('keydown', handleEscape);
+    }, [onClose]);
 
+    const portalRoot = document.getElementById('portal');
+    if (!portalRoot) return null;
 
     return createPortal(
-        <>
-            <div id="modal-overlay"></div>
-            <div id="modal-container">
-                <div className="close-container" onClick={onClose}>
-                    <div className="leftright"></div>
-                    <div className="rightleft"></div>
-                </div>
+        <div className="modal" role="dialog" aria-modal="true">
+            <div className="modal__overlay" onClick={onClose} />
+            <div className="modal__content">
+                <button
+                    type="button"
+                    className="modal__close"
+                    onClick={onClose}
+                    aria-label="Close details"
+                >
+                    ×
+                </button>
                 {children}
             </div>
-        </>,
-        document.getElementById("portal")
-    )
-}
-export default Modal
+        </div>,
+        portalRoot,
+    );
+};
+
+export default Modal;

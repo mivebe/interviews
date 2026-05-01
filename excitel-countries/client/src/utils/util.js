@@ -1,20 +1,28 @@
-export const getEntriesToShow = (entries, currentPage, itemsPerPage) => {
-    if (currentPage === 0) return undefined
-    if (entries.length === 1) return entries.slice(0, 1)
-    const start = currentPage === 1 ? 0 : (currentPage - 1) * itemsPerPage
-    const end = entries.length - 1 > start + itemsPerPage ?
-        start + itemsPerPage :
-        entries.length
-    return entries.slice(start, end)
-}
+const paginate = (entries, currentPage, itemsPerPage) => {
+    if (!Array.isArray(entries) || entries.length === 0) return [];
+    const safePage = Math.max(1, currentPage);
+    const start = (safePage - 1) * itemsPerPage;
+    return entries.slice(start, start + itemsPerPage);
+};
 
-export const getSingleEntry = (id, entries) => entries.find(entry => entry.code === id)
+const sortBy = (entries, key, direction) => {
+    if (!key) return entries;
+    const factor = direction === 'desc' ? -1 : 1;
+    return [...entries].sort((a, b) => {
+        const av = a[key] ?? '';
+        const bv = b[key] ?? '';
+        if (av < bv) return -1 * factor;
+        if (av > bv) return 1 * factor;
+        return 0;
+    });
+};
 
-export const sortCategory = (isSorted, entries, type) => {
-    const isAlreadySorted = isSorted[type]
+const filterByName = (entries, term) => {
+    const t = term.trim().toLowerCase();
+    if (!t) return entries;
+    return entries.filter(e => (e.name || '').toLowerCase().includes(t));
+};
 
-    return !isAlreadySorted ?
-        [...entries.sort((a, b) => (a[type] > b[type]) ? 1 : ((b[type] > a[type]) ? -1 : 0))] :
-        [...entries.sort((a, b) => (a[type] > b[type]) ? -1 : ((b[type] > a[type]) ? 0 : 1))]
-}
+const findByCode = (entries, code) => entries.find(e => e.code === code);
 
+export { paginate, sortBy, filterByName, findByCode };
