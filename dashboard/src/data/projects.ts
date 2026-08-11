@@ -77,6 +77,16 @@ export const projects: Project[] = [
   },
   // Games / Interactive
   {
+    id: "nailedit-slot-machine",
+    name: "5x3 Slot Machine",
+    company: "Nailed It! Games",
+    description:
+      "Ways-to-win slot machine where reels wind up, blur at speed and decelerate onto the exact requested outcome, followed by a win presentation that dims the board and cycles through every simultaneous win.",
+    tags: ["Pixi.js", "TypeScript", "Parcel"],
+    category: "game",
+    demoPath: "/projects/nailedit-slot-machine/",
+  },
+  {
     id: "sett-garden-makeover",
     name: "Garden Makeover",
     company: "Sett",
