@@ -1,12 +1,15 @@
+import { gsap } from 'gsap';
 import { Container, Sprite, Texture } from 'pixi.js';
 import { SymbolId, WIN_PRESENTATION } from './config';
-import { bumpPulse } from './utils/Easing';
+
+const { bumpScale, bumpDuration, dimAlpha, dimDuration, fadeOutDuration } = WIN_PRESENTATION;
 
 export class SymbolView extends Container {
     private readonly _sprite: Sprite;
     private _symbolId: SymbolId;
+    private _bump: GSAPTween | null = null;
     private _highlighted = false;
-    private _bumpElapsed = 0;
+    private _dimmed = false;
 
     constructor(symbolId: SymbolId) {
         super();
@@ -35,30 +38,46 @@ export class SymbolView extends Container {
         }
 
         this._highlighted = highlighted;
-        this._bumpElapsed = 0;
+        this._bump?.kill();
+        this._bump = null;
 
         if (!highlighted) {
-            this.scale.set(1);
-        }
-    }
-
-    setDimmed(dimmed: boolean): void {
-        this.alpha = dimmed ? WIN_PRESENTATION.dimAlpha : 1;
-    }
-
-    resetPresentation(): void {
-        this.setHighlighted(false);
-        this.setDimmed(false);
-    }
-
-    update(deltaSeconds: number): void {
-        if (!this._highlighted) {
+            gsap.to(this.scale, { x: 1, y: 1, duration: dimDuration, ease: 'power1.out', overwrite: true });
             return;
         }
 
-        this._bumpElapsed += deltaSeconds;
+        this._bump = gsap.to(this.scale, {
+            x: bumpScale,
+            y: bumpScale,
+            duration: bumpDuration * 0.5,
+            ease: 'sine.out',
+            yoyo: true,
+            repeat: -1,
+            overwrite: true
+        });
+    }
 
-        const phase = (this._bumpElapsed % WIN_PRESENTATION.bumpDuration) / WIN_PRESENTATION.bumpDuration;
-        this.scale.set(1 + (WIN_PRESENTATION.bumpScale - 1) * bumpPulse(phase));
+    setDimmed(dimmed: boolean): void {
+        if (this._dimmed === dimmed) {
+            return;
+        }
+
+        this._dimmed = dimmed;
+        gsap.to(this, {
+            alpha: dimmed ? dimAlpha : 1,
+            duration: dimDuration,
+            ease: 'power1.out',
+            overwrite: true
+        });
+    }
+
+    clearPresentation(): void {
+        this._highlighted = false;
+        this._dimmed = false;
+        this._bump?.kill();
+        this._bump = null;
+
+        gsap.to(this, { alpha: 1, duration: fadeOutDuration, ease: 'power1.out', overwrite: true });
+        gsap.to(this.scale, { x: 1, y: 1, duration: fadeOutDuration, ease: 'power1.out', overwrite: true });
     }
 }
