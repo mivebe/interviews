@@ -62,7 +62,7 @@ export default defineConfig({
   plugins: [pngToWebp(), viteSingleFile()],
   publicDir: false,
   build: {
-    assetsInlineLimit: 100 * 1024 * 1024, // 100MB — inline everything as data URIs
+    assetsInlineLimit: 100 * 1024 * 1024, // 100MB - inline everything as data URIs
     target: 'esnext',
   },
   server: {

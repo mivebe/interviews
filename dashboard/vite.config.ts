@@ -62,7 +62,7 @@ function serveStaticProjects(): Plugin {
         const mapping = staticProjectMappings[projectId];
 
         if (!mapping) {
-          // Buildable project — show dev notice
+          // Buildable project - show dev notice
           res.setHeader("Content-Type", "text/html");
           res.statusCode = 200;
           res.end(`<!DOCTYPE html>

@@ -7,7 +7,7 @@ import { createSoftCircleTexture, fireColor } from './utils';
 /**
  * Fire particle system with a fixed 10-sprite budget:
  * 2 glow (ambient pulsing), 6 flame (fast-rising body), 2 ember (bright sparks).
- * Particles recycle on death — no allocations after init.
+ * Particles recycle on death - no allocations after init.
  */
 export class ParticleEmitter extends Container {
   private static sharedTexture: Texture | null = null;
@@ -109,7 +109,7 @@ export class ParticleEmitter extends Container {
     p.sprite.rotation = randomRange(-0.3, 0.3);
   }
 
-  /** Advance all particles by `dt` seconds — handles respawn, motion, color, and scale */
+  /** Advance all particles by `dt` seconds - handles respawn, motion, color, and scale */
   update(dt: number): void {
     this.elapsed += dt;
 

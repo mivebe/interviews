@@ -10,24 +10,24 @@ An interactive 3D garden decoration experience built for the web.
 
 ## About
 
-A polished, production-ready interactive 3D web game built for a client. Players explore a garden scene and click on interactive spots to add animals, plants, and furniture — bringing the garden to life with animations, sound effects, and particle effects.
+A polished, production-ready interactive 3D web game built for a client. Players explore a garden scene and click on interactive spots to add animals, plants, and furniture - bringing the garden to life with animations, sound effects, and particle effects.
 
 The entire experience runs in the browser with no plugins or installs required.
 
 ## Key Highlights
 
-**Single-file build** — The entire game (3D models, audio, images, code) bundles into a single HTML file with all assets embedded as data URIs. Powered by Vite with custom plugins for PNG-to-WebP conversion and single-file output.
+**Single-file build** - The entire game (3D models, audio, images, code) bundles into a single HTML file with all assets embedded as data URIs. Powered by Vite with custom plugins for PNG-to-WebP conversion and single-file output.
 
-**3D + 2D hybrid rendering** — Three.js handles the 3D garden scene while Pixi.js renders the 2D UI as an overlay. Two rendering engines work together seamlessly in a layered architecture.
+**3D + 2D hybrid rendering** - Three.js handles the 3D garden scene while Pixi.js renders the 2D UI as an overlay. Two rendering engines work together seamlessly in a layered architecture.
 
 ## Features
 
 - Interactive 3D garden scene rendered with Three.js
 - 2D UI overlay system built with Pixi.js
 - Three decoration categories:
-  - **Animals** — Cow, Sheep, Chicken (with skeletal animations and idle loops)
-  - **Furniture** — Table, Cart, Swing
-  - **Plants** — Tomato, Strawberry, Grape, Corn
+  - **Animals** - Cow, Sheep, Chicken (with skeletal animations and idle loops)
+  - **Furniture** - Table, Cart, Swing
+  - **Plants** - Tomato, Strawberry, Grape, Corn
 - Smooth animations and transitions powered by GSAP
 - Audio system with background music and contextual sound effects via Howler.js
 - Sprite-sheet particle effects (smoke, flourishes)

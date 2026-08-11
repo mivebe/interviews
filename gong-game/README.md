@@ -5,22 +5,22 @@ This animation minigame is made as an interview home task for GONG Gaming Techno
 
 ```
 spine-project/
-├── index.html   — Entry point
-├── style.css    — All styles
-├── app.js       — OOP application logic
-└── README.md    — This file
+├── index.html   - Entry point
+├── style.css    - All styles
+├── app.js       - OOP application logic
+└── README.md    - This file
 ```
 
 ## How it works
 
-1. **FadeImage** — Uses GSAP to fade the hero image in over 2.2 s.  
-2. **Button** — Appears (with a pop-in animation) once the fade is complete.  
-3. **SpineAnimation** — On button click, opens a full-screen overlay and plays the *Spineboy* skeleton from Esoteric Software's public demo server using the official `@esotericsoftware/spine-player` package.  
-4. **App** — Orchestrates the three classes above.
+1. **FadeImage** - Uses GSAP to fade the hero image in over 2.2 s.  
+2. **Button** - Appears (with a pop-in animation) once the fade is complete.  
+3. **SpineAnimation** - On button click, opens a full-screen overlay and plays the *Spineboy* skeleton from Esoteric Software's public demo server using the official `@esotericsoftware/spine-player` package.  
+4. **App** - Orchestrates the three classes above.
 
 ## Running locally
 
-Just open `index.html` in a browser — no build step needed.  
+Just open `index.html` in a browser - no build step needed.  
 All dependencies are loaded from CDN:
 
 | Library | CDN |
