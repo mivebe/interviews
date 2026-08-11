@@ -1,8 +1,8 @@
+import { gsap } from 'gsap';
 import { Container, FederatedPointerEvent, Sprite, Texture } from 'pixi.js';
-import { clamp01, easeOutQuad } from './utils/Easing';
+import { BUTTON } from './config';
 
-const PRESS_SCALE = 0.94;
-const PRESS_RECOVERY_DURATION = 0.16;
+const { pressScale, pressDuration, releaseDuration } = BUTTON;
 
 export class SpinButton extends Container {
     private readonly _sprite: Sprite;
@@ -10,7 +10,6 @@ export class SpinButton extends Container {
     private _enabled = true;
     private _hovered = false;
     private _pressed = false;
-    private _pressRecovery = 1;
 
     onPress: (() => void) | null = null;
 
@@ -29,7 +28,7 @@ export class SpinButton extends Container {
         this.on('pointerup', this._onPointerUp, this);
         this.on('pointerupoutside', this._onPointerUpOutside, this);
 
-        this._refreshTexture();
+        this._refresh();
     }
 
     get enabled(): boolean {
@@ -49,33 +48,18 @@ export class SpinButton extends Container {
             this._hovered = false;
         }
 
-        this._refreshTexture();
-    }
-
-    update(deltaSeconds: number): void {
-        if (this._pressed) {
-            this._pressRecovery = 0;
-            this.scale.set(PRESS_SCALE);
-            return;
-        }
-
-        if (this._pressRecovery >= 1) {
-            return;
-        }
-
-        this._pressRecovery = clamp01(this._pressRecovery + deltaSeconds / PRESS_RECOVERY_DURATION);
-        this.scale.set(PRESS_SCALE + (1 - PRESS_SCALE) * easeOutQuad(this._pressRecovery));
+        this._refresh();
     }
 
     private _onPointerOver(): void {
         this._hovered = true;
-        this._refreshTexture();
+        this._refresh();
     }
 
     private _onPointerOut(): void {
         this._hovered = false;
         this._pressed = false;
-        this._refreshTexture();
+        this._refresh();
     }
 
     private _onPointerDown(event: FederatedPointerEvent): void {
@@ -83,13 +67,13 @@ export class SpinButton extends Container {
             return;
         }
         this._pressed = true;
-        this._refreshTexture();
+        this._refresh();
     }
 
     private _onPointerUp(): void {
         const wasPressed = this._pressed;
         this._pressed = false;
-        this._refreshTexture();
+        this._refresh();
 
         if (wasPressed && this._enabled) {
             this.onPress?.();
@@ -99,11 +83,24 @@ export class SpinButton extends Container {
     private _onPointerUpOutside(): void {
         this._pressed = false;
         this._hovered = false;
-        this._refreshTexture();
+        this._refresh();
     }
 
-    private _refreshTexture(): void {
+    private _refresh(): void {
         this._sprite.texture = Texture.from(this._textureAlias());
+
+        const targetScale = this._pressed ? pressScale : 1;
+        if (this.scale.x === targetScale) {
+            return;
+        }
+
+        gsap.to(this.scale, {
+            x: targetScale,
+            y: targetScale,
+            duration: this._pressed ? pressDuration : releaseDuration,
+            ease: this._pressed ? 'power2.out' : 'back.out(3)',
+            overwrite: true
+        });
     }
 
     private _textureAlias(): string {

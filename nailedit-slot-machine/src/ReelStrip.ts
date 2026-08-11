@@ -1,9 +1,10 @@
-import { ROW_COUNT, SymbolId } from './config';
-import { randomSymbolId } from './utils/Random';
+import { GRID, randomSymbolId, SymbolId } from './config';
 
-export const SLOT_COUNT = ROW_COUNT + 2;
+const { rowCount } = GRID;
+
+export const SLOT_COUNT = rowCount + 2;
 export const TOP_BUFFER_SLOTS = 1;
-export const MIN_STOP_RECYCLES = ROW_COUNT + 1;
+export const MIN_STOP_RECYCLES = rowCount + 1;
 
 export class ReelStrip {
     private readonly _slots: SymbolId[] = [];
@@ -25,7 +26,7 @@ export class ReelStrip {
     }
 
     get visibleSymbols(): SymbolId[] {
-        return this._slots.slice(TOP_BUFFER_SLOTS, TOP_BUFFER_SLOTS + ROW_COUNT);
+        return this._slots.slice(TOP_BUFFER_SLOTS, TOP_BUFFER_SLOTS + rowCount);
     }
 
     symbolAt(slot: number): SymbolId {

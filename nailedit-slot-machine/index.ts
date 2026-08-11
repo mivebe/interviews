@@ -1,10 +1,14 @@
+import { gsap } from 'gsap';
 import { Application, Assets, Container, Sprite } from 'pixi.js';
 import { Machine } from './src/Machine';
 import { SlotGame } from './src/SlotGame';
 import { SpinButton } from './src/SpinButton';
 import { WinPresenter } from './src/WinPresenter';
-import { BUTTON_POSITION, REEL_WINDOW, SCREEN } from './src/config';
+import { BUTTON, GRID, SCREEN } from './src/config';
 import { AssetEntry, urls } from './img';
+
+const { width: screenWidth, height: screenHeight, maxFrameDelta } = SCREEN;
+const { offsetX, offsetY } = GRID;
 
 class MainScene extends Container {
     private readonly _game: SlotGame;
@@ -13,19 +17,19 @@ class MainScene extends Container {
         super();
 
         const background = Sprite.from('background');
-        background.width = SCREEN.width;
-        background.height = SCREEN.height;
+        background.width = screenWidth;
+        background.height = screenHeight;
         this.addChild(background);
 
         const reels = Sprite.from('reels_base');
         reels.anchor.set(0.5);
-        reels.position.set(SCREEN.width * 0.5, SCREEN.height * 0.5);
+        reels.position.set(screenWidth * 0.5, screenHeight * 0.5);
         this.addChild(reels);
 
         const machine = new Machine();
         machine.position.set(
-            reels.x - reels.width * 0.5 + REEL_WINDOW.offsetX,
-            reels.y - reels.height * 0.5 + REEL_WINDOW.offsetY
+            reels.x - reels.width * 0.5 + offsetX,
+            reels.y - reels.height * 0.5 + offsetY
         );
         this.addChild(machine);
 
@@ -34,7 +38,7 @@ class MainScene extends Container {
         this.addChild(winPresenter);
 
         const spinButton = new SpinButton();
-        spinButton.position.set(BUTTON_POSITION.x, BUTTON_POSITION.y);
+        spinButton.position.set(BUTTON.x, BUTTON.y);
         this.addChild(spinButton);
 
         this._game = new SlotGame(machine, spinButton, winPresenter);
@@ -65,14 +69,13 @@ class Game {
         if (!this._scene) {
             return;
         }
-        const scale = Math.min(
-            this._app.renderer.width / SCREEN.width,
-            this._app.renderer.height / SCREEN.height
-        );
+        const { width, height } = this._app.renderer;
+        const scale = Math.min(width / screenWidth, height / screenHeight);
+
         this._scene.scale.set(scale);
         this._scene.position.set(
-            (this._app.renderer.width - SCREEN.width * scale) * 0.5,
-            (this._app.renderer.height - SCREEN.height * scale) * 0.5
+            (width - screenWidth * scale) * 0.5,
+            (height - screenHeight * scale) * 0.5
         );
     }
 }
@@ -97,6 +100,6 @@ class Game {
     app.renderer.on('resize', () => game.resize());
 
     app.ticker.add((ticker) => {
-        main.update(Math.min(ticker.deltaMS, 100) / 1000);
+        main.update(gsap.utils.clamp(0, maxFrameDelta, ticker.deltaMS / 1000));
     });
 })();

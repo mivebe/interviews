@@ -1,4 +1,4 @@
-import { SYMBOL_IDS, SymbolId, WIN_PRESENTATION } from './config';
+import { MIN_WIN_REELS, SYMBOL_IDS, SymbolId } from './config';
 import { Grid } from './Grid';
 
 export interface WinCell {
@@ -52,7 +52,7 @@ export class WinEvaluator {
             }
         }
 
-        if (reelCount < WIN_PRESENTATION.minWinLength) {
+        if (reelCount < MIN_WIN_REELS) {
             return null;
         }
 

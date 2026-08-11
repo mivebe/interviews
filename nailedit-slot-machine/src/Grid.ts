@@ -1,4 +1,6 @@
-import { REEL_COUNT, ROW_COUNT, SYMBOL_IDS, SymbolId } from './config';
+import { GRID, SYMBOL_IDS, SymbolId } from './config';
+
+const { reelCount, rowCount } = GRID;
 
 export type Grid = SymbolId[][];
 
@@ -7,14 +9,14 @@ export function isSymbolId(value: string): value is SymbolId {
 }
 
 export function toGrid(outcome: string[][]): Grid {
-    if (outcome.length !== REEL_COUNT) {
-        throw new Error(`Outcome must contain ${REEL_COUNT} reels, received ${outcome.length}`);
+    if (outcome.length !== reelCount) {
+        throw new Error(`Outcome must contain ${reelCount} reels, received ${outcome.length}`);
     }
 
     return outcome.map((column, reelIndex) => {
-        if (column.length !== ROW_COUNT) {
+        if (column.length !== rowCount) {
             throw new Error(
-                `Reel ${reelIndex} must contain ${ROW_COUNT} symbols, received ${column.length}`
+                `Reel ${reelIndex} must contain ${rowCount} symbols, received ${column.length}`
             );
         }
         return column.map((symbolId) => {

@@ -7,6 +7,7 @@ import { WinPresenter } from './WinPresenter';
 
 export enum GameState {
     Idle = 'idle',
+    Clearing = 'clearing',
     Spinning = 'spinning',
     Evaluating = 'evaluating',
     Presenting = 'presenting'
@@ -37,20 +38,25 @@ export class SlotGame {
     }
 
     requestSpin(): void {
-        if (this._state !== GameState.Idle && this._state !== GameState.Presenting) {
+        if (this._state === GameState.Idle) {
+            this._enterState(GameState.Spinning);
             return;
         }
 
-        this._machine.spin(toGrid(Outcome.resolve()));
-        this._enterState(GameState.Spinning);
+        if (this._state === GameState.Presenting) {
+            this._enterState(GameState.Clearing);
+        }
     }
 
     update(deltaSeconds: number): void {
         this._machine.update(deltaSeconds);
-        this._spinButton.update(deltaSeconds);
-        this._winPresenter.update(deltaSeconds);
 
         switch (this._state) {
+            case GameState.Clearing:
+                if (!this._winPresenter.isVisible) {
+                    this._enterState(GameState.Spinning);
+                }
+                break;
             case GameState.Spinning:
                 if (!this._machine.isSpinning) {
                     this._enterState(GameState.Evaluating);
@@ -61,9 +67,6 @@ export class SlotGame {
                 this._enterState(this._wins.length > 0 ? GameState.Presenting : GameState.Idle);
                 break;
             case GameState.Presenting:
-                if (!this._winPresenter.isPlaying) {
-                    this._enterState(GameState.Idle);
-                }
                 break;
             case GameState.Idle:
                 break;
@@ -77,10 +80,14 @@ export class SlotGame {
             case GameState.Idle:
                 this._spinButton.setEnabled(true);
                 break;
+            case GameState.Clearing:
+                this._spinButton.setEnabled(false);
+                this._winPresenter.hide();
+                break;
             case GameState.Spinning:
                 this._wins = [];
-                this._winPresenter.stop();
                 this._spinButton.setEnabled(false);
+                this._machine.spin(toGrid(Outcome.resolve()));
                 break;
             case GameState.Evaluating:
                 break;

@@ -1,16 +1,18 @@
+import { gsap } from 'gsap';
 import { Container, Graphics } from 'pixi.js';
-import { CELL, REEL_COUNT, REEL_WINDOW, SPIN } from './config';
+import { GRID, SPIN } from './config';
 import { Grid, toGrid } from './Grid';
 import { Outcome } from './Outcome';
 import { Reel } from './Reel';
 
+const { reelCount, cellWidth, width, height } = GRID;
+const { startStagger, minSpinDuration, stopStagger } = SPIN;
+
 export class Machine extends Container {
     private readonly _reels: Reel[] = [];
-    private readonly _started: boolean[] = [];
-    private readonly _stopRequested: boolean[] = [];
 
-    private _pendingGrid: Grid | null = null;
-    private _elapsed = 0;
+    private _schedule: GSAPTimeline | null = null;
+    private _allStopsRequested = false;
     private _spinning = false;
 
     constructor() {
@@ -19,16 +21,14 @@ export class Machine extends Container {
         const reelLayer = new Container();
         this.addChild(reelLayer);
 
-        for (let reelIndex = 0; reelIndex < REEL_COUNT; reelIndex++) {
+        for (let reelIndex = 0; reelIndex < reelCount; reelIndex++) {
             const reel = new Reel();
-            reel.x = reelIndex * CELL.width;
+            reel.x = reelIndex * cellWidth;
             this._reels.push(reel);
-            this._started.push(false);
-            this._stopRequested.push(false);
             reelLayer.addChild(reel);
         }
 
-        const windowMask = new Graphics().rect(0, 0, REEL_WINDOW.width, REEL_WINDOW.height).fill(0xffffff);
+        const windowMask = new Graphics().rect(0, 0, width, height).fill(0xffffff);
         this.addChild(windowMask);
         reelLayer.mask = windowMask;
 
@@ -58,41 +58,36 @@ export class Machine extends Container {
             return;
         }
 
-        this._pendingGrid = grid;
-        this._elapsed = 0;
         this._spinning = true;
-        this._started.fill(false);
-        this._stopRequested.fill(false);
+        this._allStopsRequested = false;
+        this._schedule?.kill();
+
+        const schedule = gsap.timeline({
+            onComplete: () => {
+                this._allStopsRequested = true;
+            }
+        });
+
+        this._reels.forEach((reel, reelIndex) => {
+            schedule
+                .call(() => reel.startSpin(), undefined, reelIndex * startStagger)
+                .call(
+                    () => reel.requestStop(grid[reelIndex]),
+                    undefined,
+                    minSpinDuration + reelIndex * stopStagger
+                );
+        });
+
+        this._schedule = schedule;
     }
 
     update(deltaSeconds: number): void {
-        if (this._spinning) {
-            this._elapsed += deltaSeconds;
-            this._updateSpinSchedule();
-        }
-
         for (const reel of this._reels) {
             reel.update(deltaSeconds);
         }
 
-        if (this._spinning && this._stopRequested.every(Boolean) && this._reels.every((reel) => reel.isAtRest)) {
+        if (this._spinning && this._allStopsRequested && this._reels.every((reel) => reel.isAtRest)) {
             this._spinning = false;
-            this._pendingGrid = null;
-        }
-    }
-
-    private _updateSpinSchedule(): void {
-        for (let reelIndex = 0; reelIndex < this._reels.length; reelIndex++) {
-            if (!this._started[reelIndex] && this._elapsed >= reelIndex * SPIN.startStagger) {
-                this._reels[reelIndex].startSpin();
-                this._started[reelIndex] = true;
-            }
-
-            const stopAt = SPIN.minSpinDuration + reelIndex * SPIN.stopStagger;
-            if (this._started[reelIndex] && !this._stopRequested[reelIndex] && this._elapsed >= stopAt) {
-                this._reels[reelIndex].requestStop(this._pendingGrid![reelIndex]);
-                this._stopRequested[reelIndex] = true;
-            }
         }
     }
 }
