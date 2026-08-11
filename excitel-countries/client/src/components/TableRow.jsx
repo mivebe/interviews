@@ -14,7 +14,7 @@ const TableRow = ({ entry, columns, onShowDetail }) => {
             <tr className={`table__row${isPressing ? ' is-pressing' : ''}`} {...handlers}>
                 {columns.map(column => {
                     const value = entry[column.key];
-                    const text = value == null || value === '' ? '—' : String(value);
+                    const text = value == null || value === '' ? '-' : String(value);
                     return (
                         <td
                             key={column.key}
