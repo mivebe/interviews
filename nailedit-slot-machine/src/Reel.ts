@@ -3,6 +3,7 @@ import { BlurFilter, Container } from 'pixi.js';
 import { GRID, SPIN, SymbolId } from './config';
 import { ReelStrip, SLOT_COUNT, TOP_BUFFER_SLOTS } from './ReelStrip';
 import { SymbolView } from './SymbolView';
+import { restartTimeline } from './utils';
 
 const { cellWidth, cellHeight } = GRID;
 const {
@@ -67,9 +68,7 @@ export class Reel extends Container {
         this._timeline.kill();
         this._strip.setVisibleSymbols(column);
         this._state = ReelState.Idle;
-        this._motion.cells = 0;
-        this._motion.speed = 0;
-        this._motion.offsetY = 0;
+        this._resetMotion();
         this._syncViews();
     }
 
@@ -146,9 +145,14 @@ export class Reel extends Container {
         }
     }
 
+    private _resetMotion(): void {
+        this._motion.cells = 0;
+        this._motion.speed = 0;
+        this._motion.offsetY = 0;
+    }
+
     private _restartTimeline(): GSAPTimeline {
-        this._timeline.kill();
-        this._timeline = gsap.timeline();
+        this._timeline = restartTimeline(this._timeline);
         return this._timeline;
     }
 

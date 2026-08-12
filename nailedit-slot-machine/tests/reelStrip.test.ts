@@ -16,15 +16,15 @@ function fillerSequence(): () => SymbolId {
 
 function landAfterSpin(target: readonly SymbolId[], startCells: number, speed: number): ReelStrip {
     const strip = new ReelStrip(fillerSequence());
-    strip.scrollTo(startCells, fillerSequence());
+    strip.scrollTo(startCells);
 
     const recycles = Math.ceil((speed * stopDuration) / (2 * cellHeight));
-    const targetCells = strip.queueLanding(target, recycles, fillerSequence());
+    const targetCells = strip.queueLanding(target, recycles);
 
     const startFrom = strip.cellsScrolled;
     const steps = 40;
     for (let step = 1; step <= steps; step++) {
-        strip.scrollTo(startFrom + (targetCells - startFrom) * (step / steps), fillerSequence());
+        strip.scrollTo(startFrom + (targetCells - startFrom) * (step / steps));
     }
 
     return strip;
@@ -37,7 +37,7 @@ test('a fresh strip exposes exactly the visible rows', () => {
 
 test('setVisibleSymbols places the column in the window', () => {
     const strip = new ReelStrip(fillerSequence());
-    strip.setVisibleSymbols(column('high1', 'high2', 'high3'), fillerSequence());
+    strip.setVisibleSymbols(column('high1', 'high2', 'high3'));
     assertEqual(strip.visibleSymbols, ['high1', 'high2', 'high3'], 'visible column');
 });
 
@@ -68,7 +68,7 @@ test('the strip comes to rest aligned to a whole cell', () => {
 
 test('scrolling forward keeps the window full', () => {
     const strip = new ReelStrip(fillerSequence());
-    strip.scrollTo(57.4, fillerSequence());
+    strip.scrollTo(57.4);
     assertEqual(strip.visibleSymbols.length, rowCount, 'visible symbol count while spinning');
     assert(
         strip.visibleSymbols.every((symbolId) => typeof symbolId === 'string' && symbolId.length > 0),

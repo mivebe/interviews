@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import { Container, Text } from 'pixi.js';
 import { GRID, WIN_PRESENTATION } from './config';
 import { Machine } from './Machine';
+import { tweenAlpha } from './utils';
 import { Win } from './WinEvaluator';
 
 const { rowCount, width, height } = GRID;
@@ -20,6 +21,10 @@ const {
 interface PresentationStep {
     wins: Win[];
     duration: number;
+}
+
+function cellKey(reel: number, row: number): string {
+    return `${reel}:${row}`;
 }
 
 export class WinPresenter extends Container {
@@ -84,12 +89,7 @@ export class WinPresenter extends Container {
         this._visible = true;
         this._label.visible = true;
 
-        gsap.to(this._label, {
-            alpha: 1,
-            duration: fadeInDuration,
-            ease: 'power1.out',
-            overwrite: true
-        });
+        tweenAlpha(this._label, 1, { duration: fadeInDuration });
     }
 
     hide(): void {
@@ -104,11 +104,9 @@ export class WinPresenter extends Container {
             reel.clearPresentation();
         }
 
-        gsap.to(this._label, {
-            alpha: 0,
+        tweenAlpha(this._label, 0, {
             duration: fadeOutDuration,
             ease: 'power1.in',
-            overwrite: true,
             onComplete: () => {
                 this._label.visible = false;
                 this._visible = false;
@@ -120,14 +118,14 @@ export class WinPresenter extends Container {
         const highlighted = new Set<string>();
         for (const win of step.wins) {
             for (const cell of win.cells) {
-                highlighted.add(`${cell.reel}:${cell.row}`);
+                highlighted.add(cellKey(cell.reel, cell.row));
             }
         }
 
         const reels = this._machine.reels;
         for (let reel = 0; reel < reels.length; reel++) {
             for (let row = 0; row < rowCount; row++) {
-                const isWinning = highlighted.has(`${reel}:${row}`);
+                const isWinning = highlighted.has(cellKey(reel, row));
                 const view = reels[reel].getVisibleView(row);
                 view.setHighlighted(isWinning);
                 view.setDimmed(!isWinning);

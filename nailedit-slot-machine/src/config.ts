@@ -67,3 +67,6 @@ export const BUTTON = {
     pressDuration: 0.08,
     releaseDuration: 0.32
 } as const;
+
+
+export const DEFAULT_EASE = 'power1.out';
