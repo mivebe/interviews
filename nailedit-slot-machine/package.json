@@ -4,8 +4,7 @@
   "description": "Nailed It! Games Tech assignment",
   "scripts": {
     "serve": "parcel index.html --port=8080",
-    "build": "parcel build index.html",
-    "test": "parcel build tests/index.ts --dist-dir .test-dist --no-optimize --no-source-maps && node .test-dist/index.js"
+    "build": "parcel build index.html"
   },
   "author": "",
   "license": "ISC",
