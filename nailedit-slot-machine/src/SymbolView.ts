@@ -1,6 +1,6 @@
-import { gsap } from 'gsap';
 import { Container, Sprite, Texture } from 'pixi.js';
 import { SymbolId, WIN_PRESENTATION } from './config';
+import { tweenAlpha, tweenScale } from './utils';
 
 const { bumpScale, bumpDuration, dimAlpha, dimDuration, fadeOutDuration } = WIN_PRESENTATION;
 
@@ -42,18 +42,15 @@ export class SymbolView extends Container {
         this._bump = null;
 
         if (!highlighted) {
-            gsap.to(this.scale, { x: 1, y: 1, duration: dimDuration, ease: 'power1.out', overwrite: true });
+            tweenScale(this, 1, { duration: dimDuration });
             return;
         }
 
-        this._bump = gsap.to(this.scale, {
-            x: bumpScale,
-            y: bumpScale,
+        this._bump = tweenScale(this, bumpScale, {
             duration: bumpDuration * 0.5,
             ease: 'sine.out',
             yoyo: true,
-            repeat: -1,
-            overwrite: true
+            repeat: -1
         });
     }
 
@@ -63,12 +60,7 @@ export class SymbolView extends Container {
         }
 
         this._dimmed = dimmed;
-        gsap.to(this, {
-            alpha: dimmed ? dimAlpha : 1,
-            duration: dimDuration,
-            ease: 'power1.out',
-            overwrite: true
-        });
+        tweenAlpha(this, dimmed ? dimAlpha : 1, { duration: dimDuration });
     }
 
     clearPresentation(): void {
@@ -77,7 +69,7 @@ export class SymbolView extends Container {
         this._bump?.kill();
         this._bump = null;
 
-        gsap.to(this, { alpha: 1, duration: fadeOutDuration, ease: 'power1.out', overwrite: true });
-        gsap.to(this.scale, { x: 1, y: 1, duration: fadeOutDuration, ease: 'power1.out', overwrite: true });
+        tweenAlpha(this, 1, { duration: fadeOutDuration });
+        tweenScale(this, 1, { duration: fadeOutDuration });
     }
 }

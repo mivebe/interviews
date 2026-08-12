@@ -1,9 +1,8 @@
-import { gsap } from 'gsap';
 import { Container, Graphics } from 'pixi.js';
 import { GRID, SPIN } from './config';
-import { Grid, toGrid } from './Grid';
-import { Outcome } from './Outcome';
+import { Grid } from './Grid';
 import { Reel } from './Reel';
+import { restartTimeline } from './utils';
 
 const { reelCount, cellWidth, width, height } = GRID;
 const { startStagger, minSpinDuration, stopStagger } = SPIN;
@@ -31,8 +30,6 @@ export class Machine extends Container {
         const windowMask = new Graphics().rect(0, 0, width, height).fill(0xffffff);
         this.addChild(windowMask);
         reelLayer.mask = windowMask;
-
-        this.showGrid(toGrid(Outcome.resolve()));
     }
 
     get reels(): readonly Reel[] {
@@ -60,9 +57,8 @@ export class Machine extends Container {
 
         this._spinning = true;
         this._allStopsRequested = false;
-        this._schedule?.kill();
 
-        const schedule = gsap.timeline({
+        const schedule = restartTimeline(this._schedule, {
             onComplete: () => {
                 this._allStopsRequested = true;
             }
