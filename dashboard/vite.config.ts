@@ -8,6 +8,7 @@ const staticProjectMappings: Record<string, { root: string; indexFile?: string }
   "gong-game": { root: "../gong-game" },
   "barchart-live-coding": { root: "../barchart-live-coding", indexFile: "draw.html" },
   "kanbanize-app": { root: "../kanbanize-app" },
+  "nailedit-slot-machine": { root: "../nailedit-slot-machine/dist" },
 };
 
 /** Resolve /code-files/{project}/{file} to ../{project}/{file} */
@@ -62,7 +63,7 @@ function serveStaticProjects(): Plugin {
         const mapping = staticProjectMappings[projectId];
 
         if (!mapping) {
-          // Buildable project — show dev notice
+          // Buildable project - show dev notice
           res.setHeader("Content-Type", "text/html");
           res.statusCode = 200;
           res.end(`<!DOCTYPE html>

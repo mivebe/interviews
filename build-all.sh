@@ -96,7 +96,17 @@ cp kanbanize-app/task_3/task_3.html kanbanize-app/task_3/task_3.js dashboard/dis
 cp kanbanize-app/task_4/task_4.html kanbanize-app/task_4/task_4.js kanbanize-app/task_4/task_4.css kanbanize-app/task_4/card_data.csv dashboard/dist/projects/kanbanize-app/task_4/
 echo ">>> kanbanize-app copied."
 
-# 11. Copy code-only source files for runtime display
+# 11. Build nailedit-slot-machine (Parcel)
+echo ">>> Building nailedit-slot-machine..."
+cd nailedit-slot-machine
+npm ci --no-fund
+npm run build
+mkdir -p ../dashboard/dist/projects/nailedit-slot-machine
+cp -r dist/* ../dashboard/dist/projects/nailedit-slot-machine/
+cd ..
+echo ">>> nailedit-slot-machine built."
+
+# 12. Copy code-only source files for runtime display
 echo ">>> Copying code-only files..."
 mkdir -p dashboard/dist/code-files
 cp -r csv-processing-task dashboard/dist/code-files/

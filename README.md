@@ -28,6 +28,7 @@ A collection of interview coding projects spanning full-stack applications, fron
 
 | Project | Company | Description | Tech |
 |---|---|---|---|
+| [5x3 Slot Machine](nailedit-slot-machine/) | Nailed It! Games | Ways-to-win slot machine with staggered reel stops, motion blur, and cycling win highlights | Pixi.js, TypeScript, Parcel |
 | [Garden Makeover](sett-garden-makeover/) | Sett | Interactive 3D garden decoration game bundled as a single HTML file | Three.js, Pixi.js, GSAP, Howler.js |
 | [Ace of Shadows](softgames-ace-of-shadows/) | Softgames | Three 2D demos: card dealing, text effects, particle fire | Pixi.js, TypeScript |
 | [Gong Minigame](gong-game/) | Gong | OOP animation demo with GSAP and Spine skeleton player | JavaScript, GSAP, Spine |

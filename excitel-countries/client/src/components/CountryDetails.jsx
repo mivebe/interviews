@@ -1,12 +1,12 @@
 import '../styles/Card.css';
 
 const formatNumber = (value) => {
-    if (typeof value !== 'number') return '—';
+    if (typeof value !== 'number') return '-';
     return value.toLocaleString('en-US');
 };
 
 const formatCoords = (latLng) => {
-    if (!Array.isArray(latLng) || latLng.length < 2) return '—';
+    if (!Array.isArray(latLng) || latLng.length < 2) return '-';
     return `${latLng[0]}°, ${latLng[1]}°`;
 };
 
@@ -24,15 +24,15 @@ const CountryDetails = ({ country }) => (
         <dl className="card__grid">
             <div className="card__row">
                 <dt>Capital</dt>
-                <dd>{country.capitalName || '—'}</dd>
+                <dd>{country.capitalName || '-'}</dd>
             </div>
             <div className="card__row">
                 <dt>Region</dt>
-                <dd>{country.region || '—'}</dd>
+                <dd>{country.region || '-'}</dd>
             </div>
             <div className="card__row">
                 <dt>Subregion</dt>
-                <dd>{country.subregion || '—'}</dd>
+                <dd>{country.subregion || '-'}</dd>
             </div>
             <div className="card__row">
                 <dt>Population</dt>
