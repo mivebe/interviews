@@ -8,6 +8,7 @@ const staticProjectMappings: Record<string, { root: string; indexFile?: string }
   "gong-game": { root: "../gong-game" },
   "barchart-live-coding": { root: "../barchart-live-coding", indexFile: "draw.html" },
   "kanbanize-app": { root: "../kanbanize-app" },
+  "nailedit-slot-machine": { root: "../nailedit-slot-machine/dist" },
 };
 
 /** Resolve /code-files/{project}/{file} to ../{project}/{file} */

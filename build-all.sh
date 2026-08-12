@@ -100,7 +100,7 @@ echo ">>> kanbanize-app copied."
 echo ">>> Building nailedit-slot-machine..."
 cd nailedit-slot-machine
 npm ci --no-fund
-npx parcel build index.html --public-url ./
+npm run build
 mkdir -p ../dashboard/dist/projects/nailedit-slot-machine
 cp -r dist/* ../dashboard/dist/projects/nailedit-slot-machine/
 cd ..
